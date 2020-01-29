@@ -1,0 +1,44 @@
+{
+	"name": "@imaginelearning/ts-imports-organizer",
+	"version": "0.1.0",
+	"description": "Command line utility for organizing imports within TypeScript files",
+	"main": "index.js",
+	"bin": {
+		"ts-imports-organizer": "./index.js"
+	},
+	"scripts": {
+		"test": "echo \"Sorry, no tests. :(\"",
+		"format": "prettier --config .prettierrc --ignore-path \"node_modules/**\" --write \"**/*.{ts,js,json}\""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ImagineLearning/ts-imports-organizer.git"
+	},
+	"keywords": [
+		"TypeScript",
+		"organize",
+		"imports"
+	],
+	"author": "Eric Gibby",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ImagineLearning/ts-imports-organizer/issues"
+	},
+	"homepage": "https://github.com/ImagineLearning/ts-imports-organizer#readme",
+	"lint-staged": {
+		"*.(ts|js|json)": [
+			"pretty-quick --staged --config .prettierrc"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"devDependencies": {
+		"husky": "^4.2.1",
+		"lint-staged": "^10.0.4",
+		"prettier": "^1.19.1",
+		"pretty-quick": "^2.0.1"
+	}
+}
