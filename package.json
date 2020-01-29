@@ -7,6 +7,7 @@
 		"ts-imports-organizer": "./index.js"
 	},
 	"scripts": {
+		"start": "node ./index.js",
 		"test": "echo \"Sorry, no tests. :(\"",
 		"format": "prettier --config .prettierrc --ignore-path \"node_modules/**\" --write \"**/*.{ts,js,json}\""
 	},
@@ -40,5 +41,10 @@
 		"lint-staged": "^10.0.4",
 		"prettier": "^1.19.1",
 		"pretty-quick": "^2.0.1"
+	},
+	"dependencies": {
+		"args": "^5.0.1",
+		"glob": "^7.1.6",
+		"ts-morph": "^6.0.2"
 	}
 }
