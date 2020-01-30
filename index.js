@@ -40,7 +40,7 @@ processFiles(arguments.targets)
 		return files.length;
 	})
 	.then(count => {
-		console.log(`Organized imports in ${count} files`);
+		console.log(`Complete. Organized imports in ${count} files.`);
 		process.exit(0);
 	})
 	.catch(error => {
@@ -62,11 +62,14 @@ async function processFiles(globs) {
 		return [];
 	}
 
-	const project = new Project();
-	files.forEach(file => {
+	const project = new Project({ addFilesFromTsConfig: false });
+	console.log('Processing files...');
+	const promises = files.map(async file => {
+		console.log(`- ${file}`);
 		const source = project.addSourceFileAtPath(file);
 		source.organizeImports();
+		await source.save();
+		return file;
 	});
-	await project.save();
-	return files;
+	return Promise.all(promises);
 }
