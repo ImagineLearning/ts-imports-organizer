@@ -30,7 +30,9 @@ processFiles(arguments.options.files)
 
 async function processFiles(globs) {
 	const matches = await Promise.all(globs.map(fileGlob => globAsync(fileGlob)));
-	const files = matches.reduce((arr, match) => (match && match.length ? arr.concat(match) : arr), []);
+	const files = matches
+		.reduce((arr, match) => (match && match.length ? arr.concat(match) : arr), [])
+		.filter(file => /\.[jt]s[x]?$/i.test(file));
 
 	if (!files || !files.length) {
 		console.log('No files to process');
