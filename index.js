@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const argv = require('argv');
+const git = require('simple-git')(process.cwd());
 const glob = require('glob');
 const package = require('./package.json');
 const util = require('util');
@@ -10,15 +11,21 @@ const globAsync = util.promisify(glob);
 
 const arguments = argv
 	.version(`v${package.version}`)
-	.option({ name: 'files', short: 'f', type: 'list,string', description: 'List of files or glob patterns of files to process' })
+	.option({ name: 'stage', short: 's', type: 'boolean', description: 'Stage files in Git after processing' })
 	.run();
 
-if (!arguments.options || arguments.options.help || !arguments.options.files || !arguments.options.files.length) {
+if ((arguments.options && arguments.options.help) || !arguments.targets || !arguments.targets.length) {
 	argv.help();
 	process.exit(0);
 }
 
-processFiles(arguments.options.files)
+processFiles(arguments.targets)
+	.then(async files => {
+		if (!!arguments.options.stage && files.length) {
+			await gitAdd(files);
+		}
+		return files.length;
+	})
 	.then(count => {
 		console.log(`Organized imports in ${count} files`);
 		process.exit(0);
@@ -28,15 +35,18 @@ processFiles(arguments.options.files)
 		process.exit(1);
 	});
 
+function gitAdd(files) {
+	return new Promise((resolve, reject) => {
+		git.add(files, (error, data) => (!!error ? reject(error) : resolve(data)));
+	});
+}
+
 async function processFiles(globs) {
 	const matches = await Promise.all(globs.map(fileGlob => globAsync(fileGlob)));
-	const files = matches
-		.reduce((arr, match) => (match && match.length ? arr.concat(match) : arr), [])
-		.filter(file => /\.[jt]s[x]?$/i.test(file));
+	const files = matches.reduce((arr, match) => (match && match.length ? arr.concat(match) : arr), []).filter(file => /\.ts$/i.test(file));
 
 	if (!files || !files.length) {
-		console.log('No files to process');
-		return;
+		return [];
 	}
 
 	const project = new Project();
@@ -45,5 +55,5 @@ async function processFiles(globs) {
 		source.organizeImports();
 	});
 	await project.save();
-	return files.length;
+	return files;
 }
