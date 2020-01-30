@@ -1,6 +1,6 @@
 {
 	"name": "@imaginelearning/ts-imports-organizer",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Command line utility for organizing imports within TypeScript files",
 	"main": "index.js",
 	"bin": {
