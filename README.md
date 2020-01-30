@@ -17,7 +17,8 @@ npm install --save-dev @imaginelearning/ts-imports-organizer
 
 Usage: ts-imports-organizer [options] files
 
-Organizes the imports within the specified TypeScript files. Files can be listed individually or as glob patterns.
+Organizes the imports within the specified TypeScript files. Files can be listed individually
+or as glob patterns.
 
 Options:
 
@@ -34,7 +35,7 @@ Options:
                 'ts-imports-organizer --stage=true' or 'ts-imports-organizer -s true'
 ```
 
--   `---help`: Displays help information.
+-   `--help`: Displays help information.
 -   `--version`: Displays current version.
 -   `--stage [boolean]`: Stage files in Git after processing. Useful when using in a pre-commit hook.
 
