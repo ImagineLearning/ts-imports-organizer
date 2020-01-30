@@ -62,11 +62,12 @@ async function processFiles(globs) {
 		return [];
 	}
 
-	const project = new Project({ addFilesFromTsConfig: false });
 	console.log('Processing files...');
-	const promises = files.map(async file => {
+	const project = new Project({ addFilesFromTsConfig: false });
+	project.addSourceFilesAtPaths(files);
+	const promises = project.getSourceFiles().map(async source => {
+		const file = source.getFilePath();
 		console.log(`- ${file}`);
-		const source = project.addSourceFileAtPath(file);
 		source.organizeImports();
 		await source.save();
 		return file;
