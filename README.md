@@ -1,4 +1,4 @@
-# ts-organize-imports
+# ts-imports-organizer
 
 A command line utility for organizing imports within TypeScript files.
 
