@@ -10,8 +10,21 @@ const { Project } = require('ts-morph');
 const globAsync = util.promisify(glob);
 
 const arguments = argv
+	.info(
+		`Usage: ts-imports-organizer [options] files
+	
+Organizes the imports within the specified TypeScript files. Files can be listed individually or as glob patterns.
+
+Options:`
+	)
 	.version(`v${package.version}`)
-	.option({ name: 'stage', short: 's', type: 'boolean', description: 'Stage files in Git after processing' })
+	.option({
+		name: 'stage',
+		short: 's',
+		type: 'boolean',
+		description: 'Stage files in Git after processing',
+		example: "'ts-imports-organizer --stage=true' or 'ts-imports-organizer -s true'"
+	})
 	.run();
 
 if ((arguments.options && arguments.options.help) || !arguments.targets || !arguments.targets.length) {
