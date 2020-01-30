@@ -56,14 +56,16 @@ function gitAdd(files) {
 
 async function processFiles(globs) {
 	const matches = await Promise.all(globs.map(fileGlob => globAsync(fileGlob)));
-	const files = matches.reduce((arr, match) => (match && match.length ? arr.concat(match) : arr), []).filter(file => /\.ts$/i.test(file));
+	const files = matches
+		.reduce((arr, match) => (match && match.length ? arr.concat(match) : arr), [])
+		.filter(file => /\.[jt]s[x]?$/i.test(file));
 
 	if (!files || !files.length) {
 		return [];
 	}
 
 	console.log('Processing files...');
-	const project = new Project({ addFilesFromTsConfig: false });
+	const project = new Project({ addFilesFromTsConfig: false, compilerOptions: { allowJs: true } });
 	project.addSourceFilesAtPaths(files);
 	const promises = project.getSourceFiles().map(async source => {
 		const file = source.getFilePath();
